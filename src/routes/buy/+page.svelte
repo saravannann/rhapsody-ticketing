@@ -1,6 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import TicketForm from '$lib/components/TicketForm.svelte';
+  import ShareLink from '$lib/components/ShareLink.svelte';
   
   let { data } = $props();
   
@@ -35,6 +36,12 @@
         Join our annual fundraiser to support cancer patients. Complete the 3-step checkout below to secure your tickets for a noble cause.
       </p>
     </div>
+
+    {#if isStaff && data.currentUser}
+      <div class="max-w-xl mx-auto mb-8">
+        <ShareLink userId={data.currentUser.id} userName={data.currentUser.full_name} />
+      </div>
+    {/if}
 
     <TicketForm referrerId={referrerId} isOrganiser={isStaff} categories={data.categories} />
   </div>

@@ -34,6 +34,7 @@ export const load: PageServerLoad = async ({ locals, url }) => {
 
     return {
         categories: available,
-        referrerName
+        referrerName,
+        currentUser: locals.profile ?? null
     };
 };
