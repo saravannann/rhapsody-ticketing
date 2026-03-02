@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Ticket QR — Rhapsody</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #1a0a2e;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .card {
+            background: #2a1050;
+            border: 2px solid #d4af37;
+            border-radius: 1.5rem;
+            padding: 2rem;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 0 60px rgba(212, 175, 55, 0.15);
+        }
+
+        .badge {
+            display: inline-block;
+            background: #d4af37;
+            color: #1a0a2e;
+            font-size: 0.65rem;
+            font-weight: 900;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 0.25rem;
+        }
+
+        .sub {
+            color: #a78bfa;
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+        }
+
+        canvas {
+            background: white;
+            border-radius: 1rem;
+            padding: 1rem;
+            display: block;
+            margin: 0 auto;
+            max-width: 260px;
+            width: 100%;
+        }
+
+        .info {
+            margin-top: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            text-align: left;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.3rem 0;
+            font-size: 0.8rem;
+        }
+
+        .info-label {
+            color: #9ca3af;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+        }
+
+        .info-value {
+            color: #f9fafb;
+            font-weight: 700;
+        }
+
+        .qr-code-text {
+            margin-top: 1rem;
+            font-family: monospace;
+            font-size: 0.75rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            color: #d4af37;
+            letter-spacing: 0.05em;
+            word-break: break-all;
+            text-align: center;
+        }
+
+        .instructions {
+            margin-top: 1.5rem;
+            background: rgba(212, 175, 55, 0.08);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            border-radius: 0.75rem;
+            padding: 0.9rem 1rem;
+            font-size: 0.78rem;
+            color: #d4af37;
+            line-height: 1.6;
+        }
+
+        .instructions ol {
+            padding-left: 1.2rem;
+        }
+
+        .instructions li {
+            margin-bottom: 0.2rem;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            margin: 1.25rem 0;
+        }
+
+        .status-section {
+            margin-top: 1rem;
+        }
+
+        .status-btn {
+            display: inline-block;
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+            font-weight: 700;
+            font-size: 0.85rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-primary {
+            background: #d4af37;
+            color: #1a0a2e;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-primary:hover {
+            background: #e8c84d;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        #reset-note {
+            font-size: 0.7rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <span class="badge">🎟 Test Ticket</span>
+        <h1>Scan Me</h1>
+        <p class="sub">Hold this QR up to the Front Desk scanner</p>
+
+        <canvas id="qr-canvas"></canvas>
+
+        <div class="qr-code-text" id="qr-display">RHA-26-MOCK0001-testdata</div>
+
+        <div class="info">
+            <div class="info-row">
+                <span class="info-label">Attendee</span>
+                <span class="info-value">Test Attendee</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Category</span>
+                <span class="info-value">Platinum Pass</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Amount</span>
+                <span class="info-value">₹500</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Status</span>
+                <span class="info-value" id="status-display">Booked ✅</span>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="instructions">
+            <strong>How to test:</strong>
+            <ol>
+                <li>Run <code>seed_test_ticket.sql</code> in Supabase SQL editor</li>
+                <li>Log in as a FrontDesk user at <code>/login</code></li>
+                <li>Open <code>/scan</code> in another tab or device</li>
+                <li>Point the camera at this QR code</li>
+                <li>Scan again → see "Already Checked-in" + timestamp</li>
+            </ol>
+        </div>
+
+        <hr>
+
+        <div class="status-section">
+            <button class="status-btn btn-primary" onclick="resetTicket()">
+                🔄 Reset Ticket (Scan Again)
+            </button>
+            <p id="reset-note">Calls Supabase to reset status back to "Booked"</p>
+        </div>
+    </div>
+
+    <script>
+        const QR_DATA = 'RHA-26-MOCK0001-testdata';
+
+        // Generate the QR code
+        QRCode.toCanvas(document.getElementById('qr-canvas'), QR_DATA, {
+            width: 240,
+            margin: 2,
+            color: { dark: '#1a0a2e', light: '#ffffff' }
+        }, (err) => {
+            if (err) console.error('QR generation error:', err);
+        });
+
+        // Reset helper — calls the app's API to reset the ticket status
+        async function resetTicket() {
+            const note = document.getElementById('reset-note');
+            const statusDisplay = document.getElementById('status-display');
+            note.textContent = 'Resetting…';
+
+            try {
+                const res = await fetch('/api/dev/reset-test-ticket', { method: 'POST' });
+                if (res.ok) {
+                    note.textContent = '✅ Reset! Ticket is Booked again — scan to test.';
+                    statusDisplay.textContent = 'Booked ✅';
+                } else {
+                    const j = await res.json();
+                    note.textContent = '⚠ ' + (j.error ?? 'Reset failed');
+                }
+            } catch {
+                note.textContent = '⚠ Network error — run the SQL manually instead';
+            }
+        }
+    </script>
+</body>
+
+</html>
