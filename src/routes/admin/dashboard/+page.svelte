@@ -1,7 +1,6 @@
 <script lang="ts">
   import { invalidateAll } from '$app/navigation';
   import { enhance } from '$app/forms';
-  import ShareLink from '$lib/components/ShareLink.svelte';
   
   let { data, form } = $props();
 
@@ -59,7 +58,7 @@
 <div class="min-h-[calc(100vh-80px)] bg-brand-white">
   <!-- Admin Header Section -->
   <div class="bg-brand-purple text-brand-white py-10 px-4 sm:px-6 lg:px-8 border-b-4 border-brand-gold">
-    <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+    <div class="max-w-7xl mx-auto">
       <!-- Left: title -->
       <div>
         <div class="flex items-center gap-3 mb-2">
@@ -108,13 +107,6 @@
             Manage Staff
           </button>
         </div>
-      </div>
-
-      <!-- Right: Share link widget -->
-      <div class="md:w-80 flex-shrink-0">
-        {#if data.userProfile}
-          <ShareLink userId={data.userProfile.id} userName={data.userProfile.full_name} />
-        {/if}
       </div>
     </div>
   </div>

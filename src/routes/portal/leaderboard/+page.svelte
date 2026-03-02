@@ -1,5 +1,4 @@
 <script lang="ts">
-  import ShareLink from '$lib/components/ShareLink.svelte';
   let { data } = $props();
 </script>
 
@@ -17,12 +16,6 @@
       <p class="mt-4 text-brand-white/60 font-light text-lg max-w-2xl mx-auto">
         Track your progress and see how you rank against other organisers in our mission to support cancer care.
       </p>
-    </div>
-
-    <div class="max-w-5xl mx-auto mb-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      {#if data.currentUser}
-        <ShareLink userId={data.currentUser.id} userName={data.currentUser.full_name} />
-      {/if}
     </div>
 
     <div class="max-w-5xl mx-auto mb-20 animate-in fade-in slide-in-from-bottom-6 duration-700">

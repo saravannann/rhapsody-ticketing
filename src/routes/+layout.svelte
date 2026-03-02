@@ -59,6 +59,7 @@
 
                   {#if data.profile?.role === 'Admin'}
                     <a href="/admin/dashboard" class="text-brand-gold hover:text-white text-sm font-bold transition-colors">Admin Dashboard</a>
+                    <a href="/buy" class="text-brand-gold hover:text-white text-sm font-bold transition-colors">Buy Tickets</a>
                   {:else if data.profile?.role === 'Organiser'}
                     <a href="/portal/book" class="text-brand-gold hover:text-white text-sm font-bold transition-colors">Buy Tickets</a>
                     <a href="/portal/leaderboard" class="text-brand-gold hover:text-white text-sm font-bold transition-colors">Leaderboard</a>
@@ -119,6 +120,7 @@
 
               {#if data.profile?.role === 'Admin'}
                 <a href="/admin/dashboard" class="block text-brand-gold hover:text-white px-3 py-2 text-base font-bold transition-colors">Admin Dashboard</a>
+                <a href="/buy" class="block text-brand-gold hover:text-white px-3 py-2 text-base font-bold transition-colors">Buy Tickets</a>
               {:else if data.profile?.role === 'Organiser'}
                 <a href="/portal/book" class="block text-brand-gold hover:text-white px-3 py-2 text-base font-bold transition-colors">Buy Tickets</a>
                 <a href="/portal/leaderboard" class="block text-brand-gold hover:text-white px-3 py-2 text-base font-bold transition-colors">Leaderboard</a>
