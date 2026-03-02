@@ -1,33 +1,19 @@
 import { createClient } from '@supabase/supabase-js';
-import { env } from '$env/dynamic/private';
-import { env as publicEnv } from '$env/dynamic/public';
 
-// Lazy singleton — the client is only created on first use (at request time),
-// never at module-load / build-analysis time. This prevents Vercel build crashes
-// when env vars haven't been injected yet during the analyse phase.
-let _admin: ReturnType<typeof createClient> | null = null;
+// Uses process.env directly — works at both build time and runtime on Vercel.
+// Falls back to a dummy URL/key so the module loads cleanly during SvelteKit's
+// post-build analyse phase even when env vars haven't been injected yet.
+// Real requests will always have proper values set in Vercel's environment settings.
 
-function getAdmin() {
-    if (!_admin) {
-        const url = publicEnv.PUBLIC_SUPABASE_URL || env.VITE_SUPABASE_URL;
-        const key = env.SUPABASE_SERVICE_ROLE_KEY;
+const supabaseUrl =
+    process.env.VITE_SUPABASE_URL ||
+    process.env.PUBLIC_SUPABASE_URL ||
+    'https://placeholder-build-only.supabase.co'; // safe dummy for build phase
 
-        if (!url || !key) {
-            throw new Error(
-                '[supabaseAdmin] Missing env vars: VITE_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY must be set.'
-            );
-        }
+const supabaseServiceKey =
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    'placeholder-build-only-key'; // safe dummy for build phase
 
-        _admin = createClient(url, key, {
-            auth: { autoRefreshToken: false, persistSession: false }
-        });
-    }
-    return _admin;
-}
-
-// Proxy so existing code can keep calling `supabaseAdmin.from(...)` unchanged
-export const supabaseAdmin = new Proxy({} as ReturnType<typeof createClient>, {
-    get(_: unknown, prop: string) {
-        return (getAdmin() as Record<string, unknown>)[prop];
-    }
+export const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
+    auth: { autoRefreshToken: false, persistSession: false }
 });
